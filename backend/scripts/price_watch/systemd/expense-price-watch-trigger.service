@@ -1,0 +1,17 @@
+[Unit]
+Description=Process an on-demand Expenses Walmart price-watch request
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/ledger/apps/expense-price-watch
+ExecStart=/home/ledger/apps/expense-price-watch/venv/bin/python /home/ledger/apps/expense-price-watch/vps_scheduled.py trigger
+TimeoutStartSec=5min
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ledger/apps/expense-price-watch/state /home/ledger/apps/expense-collector/profiles/walmart_ca

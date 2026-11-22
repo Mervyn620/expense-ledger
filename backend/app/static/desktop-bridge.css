@@ -1,0 +1,11 @@
+html.expense-native .sidebar {
+  display: none !important;
+}
+
+html.expense-native .app-shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html.expense-native .workspace {
+  margin-left: 0 !important;
+}

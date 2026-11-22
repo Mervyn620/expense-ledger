@@ -1,0 +1,274 @@
+{
+  "$schema": "./collector-manifest.schema.json",
+  "manifest_version": 1,
+  "component_contract": "expense-collector/v1",
+  "collectors": [
+    {
+      "id": "walmart_ca",
+      "label": "Walmart Canada",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "walmart_ca",
+      "tab_platform": "walmart_ca",
+      "capabilities": [
+        "orders",
+        "items",
+        "product_links",
+        "payment_evidence_external",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "walmart_overlap_days",
+        "max_orders_setting": "walmart_ca"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/collectors/collect-walmart-orders.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--min-date",
+          "{min_date}",
+          "--max-orders",
+          "{max_orders}"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/walmart_cdp.py",
+        "arguments": []
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/walmart_items.csv",
+        "sanitized_cache": [
+          "raw/*_walmart_ca_*.json"
+        ]
+      }
+    },
+    {
+      "id": "amazon_ca",
+      "label": "Amazon Canada",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "amazon_ca",
+      "tab_platform": "amazon_ca",
+      "capabilities": [
+        "orders",
+        "items",
+        "payment_evidence",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "overlap_days",
+        "max_orders_setting": "amazon_ca"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/collectors/export-amazon-orders.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--min-date",
+          "{min_date}",
+          "--max-orders",
+          "{max_orders}"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/amazon.py",
+        "arguments": []
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/amazon_items.csv",
+        "sanitized_cache": [
+          "data/amazon_orders.json",
+          "data/payment_evidence.json"
+        ]
+      }
+    },
+    {
+      "id": "uber_eats",
+      "label": "Uber Eats",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "uber_eats",
+      "tab_platform": "uber_eats",
+      "capabilities": [
+        "orders",
+        "items",
+        "payment_evidence_external",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "overlap_days"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/browser/cdp-shop-page.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--match",
+          "ubereats",
+          "--platform",
+          "uber_eats",
+          "--url",
+          "https://www.ubereats.com/orders",
+          "--wait-ms",
+          "2500",
+          "--scroll-bottom",
+          "--scroll-count",
+          "2"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/uber_eats.py",
+        "arguments": [
+          "--min-date",
+          "{min_date}"
+        ]
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/delivery_items.csv",
+        "sanitized_cache": [
+          "raw/*_uber_eats_*.json"
+        ]
+      }
+    },
+    {
+      "id": "the_ordinary_ca",
+      "label": "The Ordinary Canada",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "the_ordinary_ca",
+      "tab_platform": "the_ordinary_ca",
+      "capabilities": [
+        "orders",
+        "items",
+        "product_links",
+        "payment_evidence",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "overlap_days",
+        "max_orders_setting": "the_ordinary_ca"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/collectors/export-the-ordinary-orders.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--min-date",
+          "{min_date}",
+          "--max-orders",
+          "{max_orders}"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/the_ordinary.py",
+        "arguments": []
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/the_ordinary_items.csv",
+        "sanitized_cache": [
+          "data/the_ordinary_orders.json",
+          "data/payment_evidence.json"
+        ]
+      }
+    },
+    {
+      "id": "fantuan",
+      "label": "Fantuan",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "fantuan",
+      "tab_platform": "fantuan",
+      "capabilities": [
+        "orders",
+        "items",
+        "payment_evidence_external",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "overlap_days",
+        "max_orders_setting": "fantuan"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/collectors/export-fantuan-orders.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--min-date",
+          "{min_date}",
+          "--max-orders",
+          "{max_orders}"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/fantuan.py",
+        "arguments": []
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/delivery_items.csv",
+        "sanitized_cache": [
+          "data/fantuan_orders.json"
+        ]
+      }
+    },
+    {
+      "id": "tnt_ca",
+      "label": "T&T Supermarket",
+      "enabled": true,
+      "role": "orders",
+      "ledger_platform": "tnt_ca",
+      "tab_platform": "tnt_ca",
+      "capabilities": [
+        "orders",
+        "items",
+        "product_links",
+        "payment_evidence",
+        "payment_evidence_external",
+        "sanitized_cache"
+      ],
+      "window": {
+        "overlap_days_setting": "overlap_days",
+        "max_orders_setting": "tnt_ca"
+      },
+      "collect": {
+        "runtime": "node",
+        "entrypoint": "scripts/collectors/export-tnt-orders.mjs",
+        "arguments": [
+          "--port",
+          "{port}",
+          "--min-date",
+          "{min_date}",
+          "--max-orders",
+          "{max_orders}"
+        ]
+      },
+      "import": {
+        "runtime": "python",
+        "entrypoint": "scripts/importers/tnt.py",
+        "arguments": []
+      },
+      "outputs": {
+        "transactions": "data/transactions.csv",
+        "item_staging": "data/tnt_items.csv",
+        "sanitized_cache": [
+          "data/tnt_orders.json"
+        ]
+      }
+    }
+  ]
+}

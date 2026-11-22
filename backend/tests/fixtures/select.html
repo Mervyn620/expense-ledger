@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Select regression fixture</title>
+<link rel="stylesheet" href="http://127.0.0.1:8765/static/motion.css">
+<link rel="stylesheet" href="http://127.0.0.1:8765/static/appearance.css">
+<link rel="stylesheet" href="http://127.0.0.1:8765/static/select.css">
+<script src="http://127.0.0.1:8765/static/motion.js" defer></script>
+<script src="http://127.0.0.1:8765/static/select.js" defer></script>
+<script src="select-fixture.js" defer></script></head>
+<body><h1>Isolated select regression fixture</h1>
+<form id="fixtureForm"><div id="fields"><label>测试选项<select name="choice" required><option value="">请选择</option><option value="a">Alpha</option><option value="b" disabled>Beta disabled</option><option value="c">Charlie</option></select></label></div>
+<button type="submit">提交测试</button><button type="reset">重置测试</button></form>
+<button id="replace" type="button">重建字段</button><button id="disable" type="button">切换禁用</button>
+<p>事件数：<output id="changes">0</output></p><p>表单值：<output id="result">未提交</output></p>
+</body></html>

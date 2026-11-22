@@ -1,0 +1,11 @@
+[Unit]
+Description=Retired periodic Expenses Walmart price-watch guard (disabled)
+
+[Timer]
+OnCalendar=*-*-* 03:17:00 America/Toronto
+AccuracySec=1min
+Persistent=false
+Unit=expense-price-watch.service
+
+[Install]
+WantedBy=timers.target

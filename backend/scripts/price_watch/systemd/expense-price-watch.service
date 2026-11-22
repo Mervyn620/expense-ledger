@@ -1,0 +1,17 @@
+[Unit]
+Description=Retired periodic Expenses Walmart price-watch guard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/ledger/apps/expense-price-watch
+ExecStart=/home/ledger/apps/expense-price-watch/venv/bin/python /home/ledger/apps/expense-price-watch/vps_scheduled.py scheduled --store-id 3055 --store-name "MISSISSAUGA (SQUARE ONE), ON" --store-query "A1A 1A1" --delay-seconds 75
+TimeoutStartSec=30s
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ledger/apps/expense-price-watch/state

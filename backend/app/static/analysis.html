@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <script src="/static/appearance.js?v=20261119-aurora"></script>
+  <title>账本分析</title>
+  <link rel="stylesheet" href="/static/analysis.css?v=20261116-chatgpt">
+  <link rel="stylesheet" href="/static/motion.css?v=20260912-4">
+  <link rel="stylesheet" href="/static/appearance.css?v=20261120-maint">
+  <link rel="stylesheet" href="/static/desktop-layout.css?v=20261119-aurora">
+  <link rel="stylesheet" href="/static/desktop-bridge.css?v=20260929-1">
+  <link rel="stylesheet" href="/static/desktop-starfield.css?v=20261122-game">
+  <script src="/static/motion.js?v=20260912-4" defer></script>
+  <link rel="stylesheet" href="/static/select.css?v=20260912-2">
+  <script src="/static/select.js?v=20260912-2" defer></script>
+</head>
+<body>
+  <header class="analysis-topbar">
+    <a class="back-link" href="/" aria-label="返回账本">
+      <span aria-hidden="true">‹</span>
+      账本
+    </a>
+    <div>
+      <p id="providerLabel">CHATGPT</p>
+      <h1>账本分析</h1>
+    </div>
+    <span class="service-status" id="serviceStatus">正在连接</span>
+    <button class="appearance-button" type="button" data-open-appearance aria-label="外观设置" title="壁纸与主题" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg><span>外观</span></button>
+  </header>
+
+  <main class="analysis-main">
+    <div class="analysis-provider" role="group" aria-label="选择分析服务">
+      <button type="button" data-provider="deepseek" aria-pressed="false">DeepSeek</button>
+      <button type="button" data-provider="chatgpt" aria-pressed="true">Claude</button>
+    </div>
+    <p id="providerHint" class="provider-hint">点击下方范围，将文件附到 Chrome 的 Claude 草稿，再由你发送。</p>
+    <section class="analysis-actions" aria-label="分析方式">
+      <button class="analysis-action" type="button" data-mode="month" aria-pressed="false" aria-controls="analysisResult" disabled>
+        <img src="/static/icons/calendar-days.svg" alt="">
+        <span>
+          <strong>月度花销</strong>
+          <small id="monthPeriod">最近月份</small>
+        </span>
+      </button>
+      <button class="analysis-action" type="button" data-mode="year" aria-pressed="false" aria-controls="analysisResult" disabled>
+        <img src="/static/icons/layout-dashboard.svg" alt="">
+        <span>
+          <strong>年度花销</strong>
+          <small id="yearPeriod">最近年份</small>
+        </span>
+      </button>
+      <button class="analysis-action" type="button" data-mode="trend" aria-pressed="false" aria-controls="analysisResult" disabled>
+        <img src="/static/icons/chart-no-axes-combined.svg" alt="">
+        <span>
+          <strong>总结与趋势</strong>
+          <small id="trendPeriod">全部账本</small>
+        </span>
+      </button>
+    </section>
+
+    <section class="analysis-result" id="analysisResult" data-state="empty" aria-live="polite" aria-busy="false">
+      <header class="result-heading" id="resultHeading" hidden>
+        <div>
+          <p id="resultEyebrow">分析结果</p>
+          <h2 id="resultTitle">选择一种分析方式</h2>
+        </div>
+        <span id="resultMeta"></span>
+      </header>
+
+      <div class="result-empty" id="resultEmpty">
+        <span class="empty-analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16M8 15l4-5 4 2 4-7"/><path d="M16 5h4v4"/></svg></span>
+        <h2 id="emptyTitle">选择一种分析方式</h2>
+        <p id="emptyMessage">DeepSeek 将基于本地账本中的商品、商户、金额、来源和付款方式生成分析。</p>
+        <p class="analysis-privacy" id="analysisPrivacy">点击分析后，相关账本数据将发送至 DeepSeek，分析结果缓存在本机。</p>
+      </div>
+      <div class="result-content" id="resultContent" hidden></div>
+    </section>
+
+    <section class="analysis-chat" id="deepseekChat" aria-label="自由询问">
+      <header class="chat-heading">
+        <div>
+          <h2><label for="chatQuestion">自由询问</label></h2>
+        </div>
+        <span id="chatMeta" hidden></span>
+      </header>
+      <form class="chat-form" id="chatForm">
+        <textarea id="chatQuestion" maxlength="1200" rows="1" aria-describedby="chatHint" disabled
+                  placeholder="例如：8月外卖花了多少？"></textarea>
+        <button id="chatSubmit" type="submit" aria-label="发送问题" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button>
+      </form>
+      <p class="chat-hint" id="chatHint">省略年份时按今年统计 · Ctrl / ⌘ + Enter 发送</p>
+      <div class="chat-answer" id="chatAnswer" aria-live="polite" hidden></div>
+    </section>
+
+    <section class="chatgpt-export" id="chatgptPanel" aria-label="交给 Claude 分析">
+      <header class="chatgpt-export-heading">
+        <div><p>浏览器交接</p><h2>用 Claude 分析账本</h2></div>
+        <span>发送由你决定</span>
+      </header>
+      <p>使用 Ledger User 的 Chrome，优先复用已打开的 Claude 页面（沿用 Chrome 里的登录）。月度只包含本月；年度按最近有记录的年份；总览由账本持续更新。</p>
+      <p class="chatgpt-storage">点击范围即上传相应账本资料到 Claude。月度、年度临时文件在附件就绪后清理；总览只保留一份。</p>
+      <div id="chatgptPrepared" class="chatgpt-prepared" hidden>
+        <p id="chatgptScope"></p>
+        <p id="chatgptFilePath" class="chatgpt-file-path"></p>
+        <p id="chatgptPrompt" class="chatgpt-prompt"></p>
+        <details><summary>查看资料与手动操作</summary><pre id="chatgptPreview"></pre>
+        <div class="chatgpt-export-buttons">
+          <button id="chatgptOpenFile" type="button">打开本地文件</button>
+          <button id="chatgptHandoff" type="button">重试附加文件</button>
+          <button id="chatgptCopyQuestion" type="button">复制提问</button>
+          <button id="chatgptCopyPath" type="button">复制文件路径</button>
+          <button id="chatgptDeleteTemp" type="button" hidden>确认已附加，删除本机临时文件</button>
+        </div>
+        </details>
+      </div>
+      <p id="chatgptStatus" class="chatgpt-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <div class="analysis-toast" id="analysisToast" role="status" aria-live="polite" hidden></div>
+  <script src="/static/analysis.js?v=20261119-claude" defer></script>
+</body>
+</html>

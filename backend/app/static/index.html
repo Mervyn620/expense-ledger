@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <script src="/static/appearance.js?v=20261119-aurora"></script>
+  <title>账本</title>
+  <link rel="stylesheet" href="/static/styles.css?v=20261119-notice">
+  <link rel="stylesheet" href="/static/motion.css?v=20260912-4">
+  <link rel="stylesheet" href="/static/appearance.css?v=20261120-maint">
+  <link rel="stylesheet" href="/static/desktop-layout.css?v=20261119-aurora">
+  <link rel="stylesheet" href="/static/desktop-bridge.css?v=20260929-1">
+  <link rel="stylesheet" href="/static/desktop-starfield.css?v=20261122-game">
+  <script src="/static/motion.js?v=20260912-4" defer></script>
+  <link rel="stylesheet" href="/static/select.css?v=20260912-2">
+  <script src="/static/select.js?v=20260912-2" defer></script>
+  <link rel="stylesheet" href="/static/bill-refresh.css?v=20261004-tnt">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">¥</span>
+        <span>账本</span>
+      </div>
+
+      <nav class="primary-nav" aria-label="主导航">
+        <button class="nav-item active" data-view="overview" type="button">
+          <img src="/static/icons/layout-dashboard.svg" alt="">
+          <span>总览</span>
+        </button>
+        <button class="nav-item" data-view="orders" type="button">
+          <img src="/static/icons/receipt-text.svg" alt="">
+          <span>订单</span>
+        </button>
+        <button class="nav-item" data-view="cash" type="button">
+          <img src="/static/icons/banknote.svg" alt="">
+          <span>现金</span>
+        </button>
+        <button class="nav-item" data-view="sources" type="button">
+          <img src="/static/icons/wallet-cards.svg" alt="">
+          <span>付款</span>
+        </button>
+        <button class="nav-item" data-view="operations" type="button">
+          <img src="/static/icons/shield-check.svg" alt="">
+          <span>更新</span>
+        </button>
+      </nav>
+
+      <button class="nav-item maintenance-nav" data-view="maintenance" type="button">
+        <img src="/static/icons/shield-check.svg" alt=""><span>维护</span>
+      </button>
+      <div class="sidebar-status">
+        <span class="status-dot" id="databaseDot"></span>
+        <span id="databaseStatus">连接账本</span>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="page-heading">
+          <p id="pageEyebrow">个人支出</p>
+          <h1 id="pageTitle">总览</h1>
+        </div>
+
+        <div class="top-actions">
+
+          <a class="button secondary price-watch-link" href="/price-watch" target="_blank"
+             rel="noopener" title="查看 Walmart 折扣">
+            <img src="/static/icons/store.svg" alt="">
+            <span>查折扣</span>
+          </a>
+
+          <a class="button secondary analysis-link" href="/analysis" target="_blank"
+             rel="noopener" title="打开账本分析">
+            <img src="/static/icons/chart-no-axes-combined.svg" alt="">
+            <span>分析</span>
+          </a>
+
+          <button class="appearance-button" type="button" data-open-appearance aria-label="外观设置" title="壁纸与主题" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg><span>外观</span></button>
+          <label class="select-control" id="monthControl" title="选择月份">
+            <img src="/static/icons/calendar-days.svg" alt="">
+            <select id="monthSelect" aria-label="选择月份"></select>
+          </label>
+
+        </div>
+      </header>
+
+      <main>
+        <section class="view-panel active" data-panel="overview">
+          <div class="metric-grid" id="metricGrid" aria-live="polite"></div>
+
+          <div class="overview-grid">
+            <section class="surface trend-surface">
+              <div class="section-heading">
+                <div>
+                  <p>月度走势</p>
+                  <h2 id="trendTitle">支出变化</h2>
+                </div>
+                <div class="trend-heading-tools">
+                  <span class="section-value" id="trendTotal"></span>
+                  <div class="trend-control-row">
+                    <div class="trend-zoom-controls" role="group" aria-label="支出趋势图缩放">
+                      <button
+                        class="trend-zoom-button"
+                        id="trendZoomOut"
+                        type="button"
+                        aria-label="缩小支出趋势图"
+                        title="缩小"
+                      >
+                        <img src="/static/icons/zoom-out.svg" alt="">
+                      </button>
+                      <button
+                        class="trend-zoom-button trend-zoom-reset"
+                        id="trendZoomReset"
+                        type="button"
+                        aria-label="重置支出趋势图缩放"
+                        title="重置缩放"
+                      >
+                        <span id="trendZoomLabel">100%</span>
+                      </button>
+                      <button
+                        class="trend-zoom-button"
+                        id="trendZoomIn"
+                        type="button"
+                        aria-label="放大支出趋势图"
+                        title="放大"
+                      >
+                        <img src="/static/icons/zoom-in.svg" alt="">
+                      </button>
+                    </div>
+                    <button
+                      class="trend-fullscreen-button"
+                      id="trendFullscreenButton"
+                      type="button"
+                      aria-label="全屏显示支出趋势图"
+                      aria-pressed="false"
+                      title="全屏显示"
+                    >
+                      <img src="/static/icons/maximize-2.svg" alt="">
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="trend-modes" role="group" aria-label="趋势对比方式">
+                <button type="button" data-trend-mode="total" aria-pressed="true">总支出</button>
+                <button type="button" data-trend-mode="platform" aria-pressed="false">按平台</button>
+                <button type="button" data-trend-mode="payment" aria-pressed="false">按支付方式</button>
+              </div>
+              <details class="trend-chooser" id="trendChooser" hidden>
+                <summary id="trendSelectionLabel">选择平台</summary>
+                <div class="trend-choice-toolbar">
+                  <input type="search" id="trendChoiceSearch" placeholder="搜索选项" aria-label="搜索图表选项">
+                  <button type="button" data-trend-select="all">全选</button>
+                  <button type="button" data-trend-select="none">清空</button>
+                </div>
+                <div id="trendChoices" class="trend-choices"></div>
+                <p id="trendSelectionHint" class="muted" hidden>线条较多，可减少勾选，或点击图例突出一条线。</p>
+              </details>
+              <div id="trendLegend" class="trend-legend" aria-label="已选项目，点击突出线条"></div>
+              <div class="trend-plot-wrap">
+                <div class="trend-chart" id="trendChart"></div>
+                <div id="trendTooltip" class="trend-tooltip" hidden></div>
+              </div>
+              <details id="trendData" class="trend-data">
+                <summary>查看数据</summary>
+                <div class="trend-data-scroll"><table><thead id="trendDataHead"></thead><tbody id="trendDataBody"></tbody></table></div>
+              </details>
+            </section>
+
+            <div class="distribution-stack">
+              <section class="surface distribution-surface">
+                <div class="section-heading">
+                  <div>
+                    <p>来源</p>
+                    <h2>平台分布</h2>
+                  </div>
+                </div>
+                <div
+                  class="bar-list breakdown-scroll"
+                  id="platformBreakdown"
+                  tabindex="0"
+                  aria-label="平台支出分布，可上下滚动"
+                ></div>
+              </section>
+
+              <section class="surface distribution-surface">
+                <div class="section-heading">
+                  <div>
+                    <p>资金来源</p>
+                    <h2>支付方式分布</h2>
+                  </div>
+                </div>
+                <div
+                  class="bar-list breakdown-scroll"
+                  id="paymentBreakdown"
+                  tabindex="0"
+                  aria-label="支付方式支出分布，可上下滚动"
+                ></div>
+              </section>
+            </div>
+          </div>
+
+          <section class="surface recent-surface">
+            <div class="section-heading">
+              <div>
+                <p>最近记录</p>
+                <h2>订单</h2>
+              </div>
+              <button class="text-button glass-button" data-go-view="orders" type="button">
+                查看全部
+                <img src="/static/icons/chevron-right.svg" alt="">
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>商户</th>
+                    <th>来源</th>
+                    <th>状态</th>
+                    <th>付款</th>
+                    <th class="numeric">金额</th>
+                    <th class="row-action"></th>
+                  </tr>
+                </thead>
+                <tbody id="recentOrders"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view-panel" data-panel="orders">
+          <section class="surface orders-surface">
+            <div class="filters-row">
+              <label class="search-control">
+                <img src="/static/icons/search.svg" alt="">
+                <input id="orderSearch" type="search" placeholder="搜索商户、商品或订单号">
+              </label>
+              <select id="platformFilter" aria-label="筛选来源">
+                <option value="">全部来源</option>
+              </select>
+              <select id="categoryFilter" aria-label="筛选分类">
+                <option value="">全部分类</option>
+              </select>
+              <select id="cardFilter" aria-label="筛选付款来源">
+                <option value="">全部付款</option>
+              </select>
+            </div>
+            <div class="list-summary">
+              <span id="orderCount">0 笔订单</span>
+              <span id="orderFilterSummary"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>商户</th>
+                    <th>分类</th>
+                    <th>来源</th>
+                    <th>状态</th>
+                    <th>付款</th>
+                    <th class="numeric">金额</th>
+                    <th class="row-action"></th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTable"></tbody>
+              </table>
+            </div>
+            <nav class="pagination" aria-label="订单分页">
+              <button class="button secondary" id="ordersPrevious" type="button" disabled>
+                上一页
+              </button>
+              <span id="orderPageSummary" aria-live="polite">第 0–0 / 0 笔</span>
+              <button class="button secondary" id="ordersNext" type="button" disabled>
+                下一页
+              </button>
+            </nav>
+          </section>
+        </section>
+
+        <section class="view-panel" data-panel="cash">
+          <section class="surface cash-surface">
+            <div class="section-heading">
+              <div>
+                <p>Scotia 现金记录</p>
+                <h2>取现备注</h2>
+              </div>
+              <span class="state-badge" id="cashWithdrawalBadge">0 笔</span>
+            </div>
+            <p class="section-note">
+              这里只显示识别为 ATM 现金取现的银行流水。填写用途仅作为备忘，不会创建订单，也不会计入总览支出。
+            </p>
+            <div class="cash-summary" aria-live="polite">
+              <span id="cashWithdrawalTotal">本期取现 CA$0.00</span>
+              <span id="cashWithdrawalNoted">已备注 0 / 0 笔</span>
+            </div>
+            <div class="table-wrap cash-table-wrap">
+              <table class="cash-table">
+                <thead>
+                  <tr>
+                    <th class="cash-date-column">日期</th>
+                    <th class="cash-source-column">银行记录</th>
+                    <th class="numeric cash-amount-column">取现金额</th>
+                    <th>用途备注</th>
+                  </tr>
+                </thead>
+                <tbody id="cashWithdrawalRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view-panel" data-panel="sources">
+          <div class="source-layout">
+            <section class="surface">
+              <div class="section-heading">
+                <div>
+                  <p>付款方式</p>
+                  <h2>本期支出</h2>
+                </div>
+              </div>
+              <div class="source-list" id="cardBreakdown"></div>
+            </section>
+            <section class="surface">
+              <div class="section-heading">
+                <div>
+                  <p>支出分类</p>
+                  <h2>用途分布</h2>
+                </div>
+              </div>
+              <div class="bar-list category-bars" id="categoryBreakdown"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view-panel" data-panel="operations">
+          <p class="update-notice" id="updateAttention" hidden>部分账单需要处理。<button class="text-button" data-go-view="maintenance" type="button">查看详情</button></p>
+          <div class="operations-grid">
+            <output class="cosmos-score cosmos-score--ship" id="cosmosShipScore" aria-label="星舰命中 0" hidden>星舰 <b id="cosmosShipCount">0</b></output>
+            <output class="cosmos-score cosmos-score--alien" id="cosmosAlienScore" aria-label="外星人命中 0" hidden>外星人 <b id="cosmosAlienCount">0</b></output>
+            <section class="surface update-surface">
+              <div class="section-heading">
+                <div>
+                  <h2>更新账单</h2>
+                </div>
+                <div class="update-heading-actions">
+          <button class="button secondary backend-toggle" id="backendToggleButton"
+                  type="button" aria-label="切换订单采集运行环境"
+                  title="订单采集运行环境">
+            <img src="/static/icons/database.svg" alt="">
+            <span id="backendToggleLabel">环境检查中</span>
+          </button>
+                <span class="state-badge" id="runBadge">尚未更新</span>
+                </div>
+              </div>
+              <p class="section-note" id="updateSummary" aria-live="polite">选择要更新的账单</p>
+              <div class="operation-buttons bill-update-actions">
+                <button class="operation-action" id="billRefreshButton" aria-haspopup="dialog" type="button">
+                  <span class="operation-action-icon"><img src="/static/icons/store.svg" alt=""></span>
+                  <span><strong>更新账单</strong><small>选择要更新的平台</small></span>
+                  <img class="operation-chevron" src="/static/icons/chevron-right.svg" alt="">
+                </button>
+                <button class="operation-action" id="scotiaActionButton"
+                        data-scotia-action type="button">
+                  <span class="operation-action-icon">
+                    <img src="/static/icons/landmark.svg" alt="">
+                  </span>
+                  <span>
+                    <strong id="scotiaActionTitle">登录并对账 Scotia</strong>
+                    <small id="scotiaActionHint">完成登录后自动采集并对账，无需再次点击</small>
+                  </span>
+                  <img class="operation-chevron" src="/static/icons/chevron-right.svg" alt="">
+                </button>
+              </div>
+            </section>
+            <output class="cosmos-score cosmos-score--star" id="cosmosStarScore" aria-label="星星命中 0" hidden>星星 <b id="cosmosStarCount">0</b></output>
+            <p class="cosmos-announcement" id="cosmosAnnouncement" role="status" aria-live="polite"></p>
+          </div>
+
+          <details class="surface ledger-coverage" id="wechatBillPreview">
+            <summary>微信账单核对预览</summary>
+            <form id="wechatPreviewForm" autocomplete="off">
+              <label>微信交易明细
+                <textarea name="detail" rows="5" maxlength="12000" required placeholder="从商户名称复制到交易单号和商户单号"></textarea>
+              </label>
+              <details>
+                <summary>对照饭团付款凭证（可选）</summary>
+                <p>下面的单号请从同一笔饭团订单的付款凭证填写。</p>
+                <label>饭团订单号<input name="fantuan_order_id" maxlength="128"></label>
+                <label>饭团凭证上的微信交易单号<input name="receipt_transaction_id" maxlength="128"></label>
+                <label>饭团凭证上的商户单号<input name="receipt_merchant_order_id" maxlength="128"></label>
+              </details>
+              <button class="text-button" type="submit">预览核对结果</button>
+              <output id="wechatPreviewResult" aria-live="polite"></output>
+            </form>
+          </details>
+          <details class="surface ledger-coverage">
+            <summary>数据质量与采集覆盖</summary>
+            <p id="coveragePeriod"></p>
+            <p>每个平台分别列出最近检查的记录日期和账本内已有的日期。两个端点之间仍可能缺单。</p>
+            <div id="dataCoverage" class="coverage-grid"></div>
+          </details>
+          <section class="surface reconciliation-surface" id="reconciliationReviewSection">
+            <div class="section-heading">
+              <div>
+                <p>Scotia 对账</p>
+                <h2>待核对平台扣款</h2>
+              </div>
+              <span class="state-badge" id="reconciliationReviewBadge">0 笔</span>
+            </div>
+            <p class="section-note">
+              核实订单号后选择对应订单。已入账的银行占位只在确认后合并，原始流水保留。
+            </p>
+            <div class="table-wrap reconciliation-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>平台</th>
+                    <th>账单描述</th>
+                    <th>原因</th>
+                    <th class="numeric">金额</th>
+                    <th>候选订单</th>
+                  </tr>
+                </thead>
+                <tbody id="reconciliationReviewRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="maintenance-entry"><button class="text-button" data-go-view="maintenance" type="button">维护</button></div>
+        </section>
+        <section class="view-panel" data-panel="maintenance">
+          <div class="maintenance-toolbar">
+          <button class="button secondary" id="validateButton" type="button" aria-label="校验账本">
+            <img src="/static/icons/shield-check.svg" alt="">
+            <span>校验</span>
+          </button>
+          </div>
+          <details class="surface ledger-coverage">
+            <summary>数据检查状态与统计口径</summary>
+            <p>总览按购买月份显示净支出，只减去已确认关联的银行到账退款。最近消费日期不代表最近检查日期；有限范围的采集也不保证历史完整。</p>
+            <button class="quiet-button" data-go-view="operations" type="button">查看数据质量与采集覆盖</button>
+          </details>
+          <details class="surface ledger-coverage">
+            <summary>最近账目变化</summary>
+            <p>从此次升级开始保留变化。原有订单仅建立基线，不推测过去的变化。</p>
+            <div id="recentChanges"></div>
+          </details>
+          <div class="operations-grid">
+            <section class="surface">
+              <div class="section-heading">
+                <div>
+                  <p>账本健康</p>
+                  <h2>校验结果</h2>
+                </div>
+                <span class="state-badge" id="validationBadge">未运行</span>
+              </div>
+              <div class="check-grid" id="validationChecks"></div>
+              <button class="button secondary full-width" id="validatePanelButton" type="button">
+                <img src="/static/icons/shield-check.svg" alt="">
+                <span>一键校验</span>
+              </button>
+            </section>
+            <section class="surface">
+              <div class="section-heading"><div><p>诊断</p><h2>运行详情</h2></div></div>
+              <dl class="run-facts" id="runFacts"></dl>
+              <div class="warning-list" id="runWarnings" hidden></div>
+              <div class="collector-recovery" id="collectorRecovery" hidden></div>
+              <div class="operation-buttons">
+                <button class="operation-action" data-refresh-mode="local" type="button">
+                  <span class="operation-action-icon">
+                    <img src="/static/icons/database.svg" alt="">
+                  </span>
+                  <span>
+                    <strong>重建本地报表</strong>
+                    <small>不访问浏览器</small>
+                  </span>
+                  <img class="operation-chevron" src="/static/icons/chevron-right.svg" alt="">
+                </button>
+              </div>
+            </section>
+          </div>
+          <section class="surface task-surface">
+            <div class="section-heading">
+              <div>
+                <p>后台任务</p>
+                <h2>运行记录</h2>
+              </div>
+            </div>
+            <div id="jobList" class="job-list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="appearance-dialog bill-refresh-dialog" id="billRefreshDialog" aria-labelledby="billRefreshTitle">
+    <form id="billRefreshForm">
+      <header class="appearance-heading">
+        <h2 id="billRefreshTitle">更新账单</h2>
+        <button class="appearance-close" type="button" data-close-bill-refresh aria-label="关闭平台选择">×</button>
+      </header>
+      <fieldset>
+        <legend>选择更新平台</legend>
+        <div class="bill-platform-grid">
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="walmart_ca"><span>Walmart</span></label>
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="uber_eats"><span>Uber Eats</span></label>
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="fantuan"><span>饭团</span></label>
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="amazon_ca"><span>Amazon</span></label>
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="the_ordinary_ca"><span>The Ordinary</span></label>
+          <label class="bill-platform-option"><input type="checkbox" name="platform" value="tnt_ca"><span>大统华 T&amp;T</span></label>
+        </div>
+      </fieldset>
+      <footer class="bill-refresh-footer">
+        <button class="button secondary" type="button" data-close-bill-refresh>取消</button>
+        <button class="button primary" id="billRefreshConfirm" type="submit">确定运行</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="detail-drawer" id="detailDrawer" role="dialog" aria-modal="true"
+         aria-labelledby="drawerMerchant" aria-hidden="true" tabindex="-1">
+    <header class="drawer-header">
+      <div>
+        <p id="drawerDate"></p>
+        <h2 id="drawerMerchant">订单明细</h2>
+      </div>
+      <button class="icon-button" id="closeDrawerButton" type="button" aria-label="关闭">
+        <img src="/static/icons/x.svg" alt="">
+      </button>
+    </header>
+    <div class="drawer-content" id="drawerContent"></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/static/trend.js?v=20261004-layered-dawn" defer></script>
+  <script src="/static/bill-refresh.js?v=20261004-tnt" defer></script>
+  <script src="/static/app.js?v=20261004-tnt" defer></script>
+</body>
+</html>

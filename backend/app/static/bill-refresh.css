@@ -1,0 +1,24 @@
+.bill-refresh-dialog { box-sizing: border-box; width: min(440px, calc(100vw - 32px)); }
+.bill-refresh-dialog .appearance-heading h2 { font-size: 21px; }
+.bill-refresh-dialog .appearance-close { min-width: 44px; min-height: 44px; }
+.bill-refresh-dialog fieldset { margin-bottom: 0; max-height: min(260px, calc(100dvh - 190px)); overflow-y: auto; overflow-x: hidden; padding: 4px; }
+.bill-platform-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.bill-platform-option {
+  display: flex; align-items: center; gap: 12px; min-height: 48px; box-sizing: border-box; padding: 12px;
+  border: 1px solid var(--line-strong); border-radius: 12px;
+  background: rgb(var(--glass-rgb) / 35%); color: var(--text); font-weight: 600; cursor: pointer;
+}
+.bill-platform-option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.bill-platform-option input { width: 19px; height: 19px; margin: 0; flex-shrink: 0; accent-color: var(--accent); }
+.bill-platform-option span { min-width: 0; overflow-wrap: anywhere; }
+.bill-refresh-footer { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.bill-refresh-footer .button { min-height: 44px; }
+/* Retain the existing two-column footprint after merging the store actions. */
+.update-surface .operation-buttons.bill-update-actions { min-height: 222px; align-content: center; }
+.update-surface #billRefreshButton { border-color: var(--line-strong); background: var(--accent-soft); }
+@media (max-width: 1050px) { .update-surface .operation-buttons.bill-update-actions { min-height: 0; } }
+@media (max-width: 400px) { .bill-platform-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (forced-colors: active) {
+  .bill-platform-option:has(input:checked) { border-color: Highlight; }
+  .bill-refresh-dialog, .bill-platform-option { background: Canvas; color: CanvasText; }
+}

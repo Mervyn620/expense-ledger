@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <script src="/static/appearance.js?v=20261119-aurora"></script>
+  <title>Walmart 折扣检查</title>
+  <link rel="stylesheet" href="/static/price-watch.css?v=20260725-7">
+  <link rel="stylesheet" href="/static/motion.css?v=20260912-4">
+  <link rel="stylesheet" href="/static/appearance.css?v=20261120-maint">
+  <link rel="stylesheet" href="/static/desktop-layout.css?v=20261119-aurora">
+  <link rel="stylesheet" href="/static/desktop-bridge.css?v=20260929-1">
+  <link rel="stylesheet" href="/static/desktop-starfield.css?v=20261122-game">
+  <script src="/static/motion.js?v=20260912-4" defer></script>
+  <link rel="stylesheet" href="/static/select.css?v=20260912-2">
+  <script src="/static/select.js?v=20260912-2" defer></script>
+</head>
+<body>
+  <main class="watch-shell">
+    <header class="watch-header">
+      <div class="watch-brand">
+        <div class="watch-mark" aria-hidden="true">
+          <img src="/static/icons/store.svg" alt="">
+        </div>
+        <div>
+          <p>Walmart · Square One · America/Toronto</p>
+          <h1>已购商品折扣</h1>
+        </div>
+      </div>
+      <button class="appearance-button" type="button" data-open-appearance aria-label="外观设置" title="壁纸与主题" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg><span>外观</span></button>
+    </header>
+
+    <section class="watch-card" aria-labelledby="watchStatusTitle">
+      <div class="status-heading">
+        <div>
+          <p id="watchBackend">本机专用浏览器</p>
+          <h2 id="watchStatusTitle">准备就绪</h2>
+        </div>
+        <span class="watch-badge idle" id="watchBadge">待运行</span>
+      </div>
+
+      <p class="watch-message" id="watchMessage" aria-live="polite">
+        正在载入本机最近一次结果。
+      </p>
+
+      <div class="watch-stats" aria-label="最近一次检查结果">
+        <span><strong id="checkedCount">0</strong> 已检查</span>
+        <span><strong id="dealCount">0</strong> 有折扣</span>
+      </div>
+
+      <button class="run-button" id="runPriceWatch" type="button">
+        <img src="/static/icons/refresh-cw.svg" alt="">
+        <span id="runPriceWatchLabel">检查折扣</span>
+      </button>
+
+      <p class="watch-note">
+        查折扣固定使用本机专用浏览器，不受主页订单采集环境开关影响。每次只读取一次
+        Walmart “My Items”购买清单，不会逐个打开商品页。
+      </p>
+    </section>
+
+    <section class="deals-card" aria-labelledby="dealListTitle">
+      <div class="deals-heading">
+        <div>
+          <p>折扣商品</p>
+          <h2 id="dealListTitle">本机最近结果</h2>
+        </div>
+        <span id="resultTimestamp">尚未同步</span>
+      </div>
+      <div class="deal-list" id="dealList">
+        <p class="empty-deals">正在读取已同步结果……</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/price-watch.js?v=20260725-7" defer></script>
+</body>
+</html>

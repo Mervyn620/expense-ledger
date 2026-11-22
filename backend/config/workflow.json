@@ -1,0 +1,55 @@
+{
+  "collection_floor": "2026-05-01",
+  "payment_evidence_floor": "2026-05-01",
+  "on_demand_collectors": [
+    "amazon_ca",
+    "the_ordinary_ca",
+    "tnt_ca"
+  ],
+  "port": 9223,
+  "parallel_collection": {
+    "enabled": false,
+    "max_workers": 3
+  },
+  "overlap_days": 7,
+  "walmart_overlap_days": 14,
+  "collector_max_orders": {
+    "walmart_ca": 12,
+    "amazon_ca": 12,
+    "the_ordinary_ca": 12,
+    "fantuan": 12,
+    "uber_eats_receipts": 12,
+    "payment_evidence": 16,
+    "tnt_ca": 12
+  },
+  "collector_policy": {
+    "min_action_delay_ms": 700,
+    "max_action_delay_ms": 1400,
+    "settle_min_ms": 900,
+    "settle_max_ms": 1700,
+    "max_retries": 2,
+    "backoff_base_ms": 1200,
+    "backoff_max_ms": 10000,
+    "block_cooldown_minutes": 120,
+    "failure_cooldown_minutes": 30,
+    "max_consecutive_failures": 3,
+    "cdp_call_timeout_ms": 15000,
+    "platforms": {
+      "amazon_ca": {
+        "min_action_delay_ms": 900,
+        "max_action_delay_ms": 1700,
+        "block_cooldown_minutes": 240
+      },
+      "the_ordinary_ca": {
+        "min_action_delay_ms": 900,
+        "max_action_delay_ms": 1700,
+        "block_cooldown_minutes": 240
+      },
+      "scotia": {
+        "min_action_delay_ms": 1200,
+        "max_action_delay_ms": 2200,
+        "block_cooldown_minutes": 360
+      }
+    }
+  }
+}

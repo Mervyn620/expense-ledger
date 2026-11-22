@@ -1,0 +1,55 @@
+{
+  "cards": {
+    "mc_1111": {
+      "display_name": "Example Bank Mastercard 1111",
+      "network": "Mastercard",
+      "issuer": "Example Bank",
+      "default_for_unspecified_credit": true,
+      "last4": "1111",
+      "kind": "credit_card"
+    },
+    "scotia_visa_2222": {
+      "display_name": "Scotiabank Visa 2222",
+      "network": "Visa",
+      "issuer": "Scotiabank",
+      "last4": "2222",
+      "kind": "debit_card"
+    },
+    "account_debit": {
+      "display_name": "账户直接扣款",
+      "network": "Bank account",
+      "issuer": "",
+      "last4": "",
+      "kind": "account_debit"
+    },
+    "wechat_pay": {
+      "display_name": "WeChat Pay",
+      "network": "Digital wallet",
+      "issuer": "WeChat Pay",
+      "last4": "",
+      "kind": "digital_wallet"
+    },
+    "alipay": {
+      "display_name": "支付宝",
+      "network": "Digital wallet",
+      "issuer": "Alipay",
+      "last4": "",
+      "kind": "digital_wallet"
+    },
+    "unassigned": {
+      "display_name": "Needs Review",
+      "network": "",
+      "issuer": "",
+      "last4": "",
+      "kind": "needs_review"
+    }
+  },
+  "bank_accounts": {
+    "scotia_chequing_3333": {
+      "display_name": "Scotiabank Chequing 3333",
+      "default_payment_instrument_id": "scotia_visa_2222",
+      "direct_debit_instrument_id": "account_debit"
+    }
+  },
+  "default_card_id": "unassigned"
+}

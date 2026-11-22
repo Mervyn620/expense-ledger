@@ -1,0 +1,163 @@
+/* Shared interaction timing, independent of page colors and future themes. */
+:root {
+  --motion-press: 90ms;
+  --motion-control: 160ms;
+  --motion-emphasis: 200ms;
+  --motion-panel: 220ms;
+  --motion-enter: 360ms;
+  --motion-data: 480ms;
+  --motion-draw: 640ms;
+  --motion-ease: cubic-bezier(.2, .8, .2, 1);
+  --control-hover-shadow: 0 3px 10px rgb(23 32 27 / 6%);
+}
+
+/* Reusable glass interaction: one soft sweep per hover/focus, never a loop. */
+:is(.glass-button, .button, .operation-action, .analysis-action, .run-button, #chatSubmit, .appearance-button) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+:is(.glass-button, .button, .operation-action, .analysis-action, .run-button, #chatSubmit, .appearance-button)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  top: -60%; left: -70%; width: 45%; height: 220%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 32%), transparent);
+  transform: translateX(0) skewX(-18deg);
+  opacity: 0;
+}
+@keyframes glass-sweep {
+  0% { transform: translateX(0) skewX(-18deg); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(440%) skewX(-18deg); opacity: 0; }
+}
+
+button,
+a.button,
+.run-button,
+.glass-button,
+.back-link {
+  transition:
+    background-color var(--motion-control) var(--motion-ease),
+    border-color var(--motion-control) var(--motion-ease),
+    color var(--motion-control) var(--motion-ease),
+    box-shadow var(--motion-emphasis) var(--motion-ease),
+    opacity var(--motion-control) var(--motion-ease),
+    transform var(--motion-control) var(--motion-ease);
+  touch-action: manipulation;
+}
+
+.operation-chevron {
+  transition: transform var(--motion-emphasis) var(--motion-ease);
+}
+
+/* Hover decoration is limited to devices with a real hover pointer. */
+@media (hover: hover) and (pointer: fine) {
+  .operation-action:hover:not(:disabled),
+  .button:hover:not(:disabled),
+  .run-button:hover:not(:disabled) {
+    box-shadow: var(--control-hover-shadow);
+  }
+
+  :is(.glass-button, .button, .operation-action, .analysis-action, .run-button, #chatSubmit, .appearance-button):hover:not(:disabled):not([aria-disabled="true"]) {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: var(--control-hover-shadow);
+  }
+  :is(.glass-button, .button, .operation-action, .analysis-action, .run-button, #chatSubmit, .appearance-button):hover:not(:disabled):not([aria-disabled="true"])::before {
+    animation: glass-sweep var(--motion-draw) var(--motion-ease) 1 both;
+  }
+
+  .operation-action:hover:not(:disabled) .operation-chevron {
+    transform: translateX(3px);
+  }
+}
+
+:is(.glass-button, .button, .operation-action, .analysis-action, .run-button, #chatSubmit, .appearance-button):focus-visible:not(:disabled)::before {
+  animation: glass-sweep var(--motion-draw) var(--motion-ease) 1 both;
+}
+
+/* Small controls press in place; large action cards move just one pixel. */
+:is(.button, .icon-button, .trend-zoom-button, .trend-fullscreen-button,
+    .trend-modes button, .trend-legend button, .trend-choice-toolbar button,
+    .run-button, #chatSubmit, .glass-button, .appearance-button):active:not(:disabled) {
+  transform: scale(.97);
+  transition-duration: var(--motion-press);
+}
+
+:is(.operation-action, .analysis-action):active:not(:disabled) {
+  transform: translateY(1px);
+  transition-duration: var(--motion-press);
+}
+
+/* Disabled controls never retain a hover lift or suggest they can be pressed. */
+button:disabled,
+:is(button, a.button, .glass-button)[aria-disabled="true"] {
+  transform: none !important;
+}
+button:disabled::before, :is(button, a.button, .glass-button)[aria-disabled="true"]::before { animation: none !important; opacity: 0; }
+
+.operation-action:disabled .operation-chevron {
+  transform: none;
+}
+
+/* Disable displacement as well as timing for reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  button,
+  a.button,
+  .glass-button,
+  .back-link,
+  .operation-chevron {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  button *,
+  a.button *,
+  .glass-button * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  button::before, a.button::before, .glass-button::before { animation: none !important; opacity: 0 !important; }
+}
+
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+:root[data-motion="reduced"] :is(button, a.button, .glass-button, .operation-chevron) { transform: none !important; }
+:root[data-motion="reduced"] :is(button, a.button, .glass-button)::before { opacity: 0 !important; }
+
+.metric-value { position: relative; height: 1.2em; min-height: 1.2em; }
+.metric-value > span { display: block; position: absolute; inset: 0; }
+.metric-value > .metric-previous { pointer-events: none; }
+.primary-nav.motion-nav { position: relative; }
+.motion-nav .nav-item { position: relative; z-index: 1; }
+.nav-indicator { position: absolute; pointer-events: none; transform-origin: top left; border-radius: 10px; }
+:is(.metric-card, .trend-surface, .distribution-surface, .analysis-result, .analysis-action, .watch-card, .update-surface) { position: relative; }
+.material-glint { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; border-radius: inherit; overflow: hidden; }
+.trend-ghost, .trend-hover-guide { pointer-events: none; }
+.trend-hover-guide { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 4; }
+.bar-progress::-webkit-progress-value { background-size: 180% 100%; animation: progress-light var(--motion-draw) var(--motion-ease) 1; }
+.bar-progress::-moz-progress-bar { background-size: 180% 100%; animation: progress-light var(--motion-draw) var(--motion-ease) 1; }
+@keyframes progress-light { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@media (hover: hover) and (pointer: fine) {
+  :is(.icon-button, .appearance-close, .wallpaper-option, .theme-colors button, .appearance-reset):hover:not(:disabled) { transform: translateY(-1px); border-color: var(--accent); box-shadow: var(--control-hover-shadow); }
+}
+:is(.appearance-close, .wallpaper-option, .theme-colors button, .appearance-reset):active:not(:disabled) { transform: scale(.98); transition-duration: var(--motion-press); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .material-glint { display: none; }
+  .bar-progress::-webkit-progress-value { animation: none !important; }
+  .bar-progress::-moz-progress-bar { animation: none !important; }
+}
+:root[data-motion="reduced"] .material-glint { display: none; }
+:root[data-motion="reduced"] .bar-progress::-webkit-progress-value { animation: none !important; }
+:root[data-motion="reduced"] .bar-progress::-moz-progress-bar { animation: none !important; }

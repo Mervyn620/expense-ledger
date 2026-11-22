@@ -1,0 +1,44 @@
+.tools/
+tools/dotnet/
+tools/nuget/
+.desktop-state/
+releases/
+desktop/bin/
+desktop/obj/
+verification/*private*
+backend/data/
+backend/exports/
+backend/config/collector_backends.json
+backend/config/desktop-browser.json
+backend/config/price_watch.json
+backend/config/collection.local.json
+backend/config/setup.json
+backend/.app-runtime/
+backend/.codex/
+backend/.codex-shop-browser/
+backend/backups/
+backend/raw/
+backend/downloads/
+backend/**/__pycache__/
+
+tests/**/bin/
+tests/**/obj/
+verification/*.png
+
+# Local verification artifacts and secrets are never source releases.
+verification/
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.log
+*.tmp
+
+# Version-history bundles and work-in-progress snapshots stay local.
+.local-backups/
+
+# Embedded Python/Node built by tools/setup-runtime.ps1 (machine-local, ~100 MB).
+/runtime/
+/runtime.staging-*/
+/runtime.previous-*/

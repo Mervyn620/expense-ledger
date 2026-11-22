@@ -1,0 +1,160 @@
+{
+  "platforms": {
+    "uber_eats": {
+      "terms": ["uber"],
+      "required_any": ["eat", "holdings", "direct", "pass"],
+      "merchant": "Uber Eats",
+      "category": "food_delivery",
+      "item": "Bank-reconciled Uber Eats charge",
+      "fulfillment": "bank_reconciled",
+      "membership_terms": ["pass", "membership", "uber one"],
+      "membership_merchant": "Uber membership",
+      "membership_category": "delivery_membership",
+      "membership_item": "Uber membership/pass charge",
+      "membership_fulfillment": "subscription",
+      "requires_order_match": true,
+      "membership_requires_order_match": false
+    },
+    "fantuan": {
+      "terms": ["fantuan", "fan tuan"],
+      "merchant": "Fantuan",
+      "category": "food_delivery",
+      "item": "Bank-reconciled Fantuan charge",
+      "fulfillment": "bank_reconciled",
+      "requires_order_match": true
+    },
+    "doordash": {
+      "terms": ["doordash"],
+      "merchant": "DoorDash",
+      "category": "food_delivery",
+      "item": "Bank-reconciled DoorDash charge",
+      "fulfillment": "bank_reconciled"
+    },
+    "skip_the_dishes": {
+      "terms": ["skipthe", "skip the dishes"],
+      "merchant": "SkipTheDishes",
+      "category": "food_delivery",
+      "item": "Bank-reconciled SkipTheDishes charge",
+      "fulfillment": "bank_reconciled"
+    },
+    "hungry_panda": {
+      "terms": ["hungrypanda", "hungry panda"],
+      "merchant": "HungryPanda",
+      "category": "food_delivery",
+      "item": "Bank-reconciled HungryPanda charge",
+      "fulfillment": "bank_reconciled"
+    },
+    "walmart_ca": {
+      "terms": ["walmart.ca"],
+      "merchant": "Walmart",
+      "category": "general_retail",
+      "item": "Bank-reconciled Walmart charge",
+      "fulfillment": "bank_reconciled",
+      "requires_order_match": true
+    },
+    "amazon_ca": {
+      "terms": ["amazon.ca", "amzn mktp ca", "amazon"],
+      "merchant": "Amazon",
+      "category": "general_retail",
+      "item": "Bank-reconciled Amazon charge",
+      "fulfillment": "bank_reconciled",
+      "membership_terms": ["prime memb", "amazon prime", "prime membership"],
+      "membership_merchant": "Amazon Prime",
+      "membership_category": "retail_membership",
+      "membership_item": "Amazon Prime membership",
+      "membership_fulfillment": "subscription",
+      "requires_order_match": true,
+      "membership_requires_order_match": false
+    },
+    "the_ordinary_ca": {
+      "terms": ["deciem", "the ordinary"],
+      "merchant": "The Ordinary",
+      "category": "personal_care",
+      "item": "Bank-reconciled The Ordinary order",
+      "fulfillment": "bank_reconciled",
+      "requires_order_match": true
+    }
+  },
+  "merchant_profiles": [
+    {
+      "terms": ["walmart"],
+      "merchant": "Walmart",
+      "category": "general_retail",
+      "item": "Walmart in-store purchase",
+      "fulfillment": "in_store"
+    },
+    {
+      "terms": ["uber trip", "ubertrip"],
+      "merchant": "Uber Rides",
+      "category": "transportation",
+      "item": "Uber ride",
+      "fulfillment": "ride"
+    },
+    {
+      "terms": ["openai", "chatgpt"],
+      "merchant": "OpenAI ChatGPT",
+      "category": "software_subscription",
+      "item": "ChatGPT subscription"
+    },
+    {
+      "terms": ["telus mobility"],
+      "merchant": "TELUS Mobility",
+      "category": "telecom",
+      "item": "Mobile service"
+    },
+    {
+      "terms": ["apple.com/bill"],
+      "merchant": "Apple",
+      "category": "digital_services",
+      "item": "Apple digital purchase"
+    },
+    {
+      "terms": ["steam purchase"],
+      "merchant": "Steam",
+      "category": "digital_entertainment",
+      "item": "Steam purchase"
+    },
+    {
+      "terms": ["tim hortons"],
+      "merchant": "Tim Hortons",
+      "category": "dining",
+      "item": "Restaurant/coffee purchase"
+    },
+    {
+      "terms": ["hey noodles"],
+      "merchant": "Hey Noodles",
+      "category": "dining",
+      "item": "Restaurant purchase"
+    },
+    {
+      "terms": ["yunshang rice"],
+      "merchant": "Yunshang Rice Noodle",
+      "category": "dining",
+      "item": "Restaurant purchase"
+    },
+    {
+      "terms": ["nespresso"],
+      "merchant": "Nespresso",
+      "category": "coffee_supplies",
+      "item": "Coffee supplies"
+    },
+    {
+      "terms": ["rogue wave coffee"],
+      "merchant": "Rogue Wave Coffee",
+      "category": "coffee_supplies",
+      "item": "Coffee purchase"
+    },
+    {
+      "terms": ["t t supermarket"],
+      "merchant": "T&T Supermarket",
+      "category": "groceries",
+      "item": "Grocery purchase"
+    }
+  ],
+  "service_charge_profile": {
+    "merchant": "Scotiabank",
+    "category": "bank_fees",
+    "item": "Bank service fee",
+    "fulfillment": "bank_reconciled"
+  }
+}

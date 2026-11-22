@@ -1,0 +1,11 @@
+[Unit]
+Description=Check for an on-demand Expenses Walmart price-watch request
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=10s
+Unit=expense-price-watch-trigger.service
+
+[Install]
+WantedBy=timers.target

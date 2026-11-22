@@ -1,0 +1,68 @@
+/* Capability-gated desktop layout. Browser pages and prior native hosts are unchanged. */
+html.expense-native[data-desktop-layout="wallpaper"] {
+  --desktop-scenic-height: clamp(112px, 17vh, 180px);
+}
+html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper="jade"] { --desktop-scenic-height: clamp(112px, 17vh, 180px); }
+html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper="ink"] { --desktop-scenic-height: clamp(64px, 10vh, 108px); }
+html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper="indigo"] { --desktop-scenic-height: clamp(112px, 17vh, 180px); }
+html.expense-native[data-desktop-layout="wallpaper"][data-desktop-visual-mode="static"] body::before {
+  inset: auto;
+  left: calc(-1 * var(--host-wallpaper-x, 0px)); top: calc(-1 * var(--host-wallpaper-y, 0px));
+  width: var(--host-wallpaper-width, 100vw); height: var(--host-wallpaper-height, 100vh);
+}
+html.expense-native[data-desktop-layout="wallpaper"][data-desktop-glass="opaque"] body::before { background: var(--canvas); }
+html.expense-native[data-desktop-layout="wallpaper"] .topbar {
+  position: relative; top: auto; min-height: 68px; max-width: 1320px;
+  width: calc(100% - 48px); margin: 20px auto 18px; padding: 12px 20px;
+  gap: 16px; border: 1px solid var(--glass-edge); border-radius: 20px;
+  box-shadow: inset 0 1px rgb(255 255 255 / 20%), 0 10px 28px rgb(8 20 35 / 12%);
+}
+html.expense-native[data-desktop-layout="wallpaper"] .page-heading h1 { font-size: 23px; }
+html.expense-native[data-desktop-layout="wallpaper"] .page-heading p { display: none; }
+html.expense-native[data-desktop-layout="wallpaper"] main { max-width: 1376px; padding: 0 24px 40px; }
+html.expense-native[data-desktop-layout="wallpaper"] .metric-grid { gap: 14px; margin-bottom: 0; }
+html.expense-native[data-desktop-layout="wallpaper"] .metric-card { min-height: 116px; padding: 16px 18px; }
+html.expense-native[data-desktop-layout="wallpaper"] .metric-value { font-size: clamp(24px, 2.1vw, 32px); margin-top: 8px; }
+html.expense-native[data-desktop-layout="wallpaper"] .metric-note { min-height: 20px; height: auto; margin-top: 8px; font-size: 12px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-scenic-gap { height: var(--desktop-scenic-height); pointer-events: none; }
+html.expense-native[data-desktop-layout="wallpaper"] .overview-grid { grid-template-columns: minmax(0, 1.65fr) minmax(280px, .72fr); align-items: start; gap: 18px; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface { min-height: 360px; padding: 18px 20px 14px; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface > .section-heading { margin-bottom: 8px; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface .section-heading p { display: none; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface .section-heading h2 { font-size: 20px; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface:not(:fullscreen) .trend-plot-wrap { height: 260px; min-height: 260px; flex: 0 0 260px; }
+html.expense-native[data-desktop-layout="wallpaper"] .trend-surface:not(:fullscreen) .trend-plot-wrap .trend-chart { min-height: 260px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-card { padding: 18px; min-height: 320px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-card .section-heading { margin-bottom: 14px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-card h2 { margin: 0; font-size: 20px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-panel { border: 0; padding: 0; margin: 0; min-height: 0; background: none; box-shadow: none; backdrop-filter: none; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-panel[hidden] { display: none; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-panel > .section-heading { display: none; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-panel .breakdown-scroll { max-height: 258px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs button { flex: 1; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid transparent; border-radius: 10px; color: var(--text-soft); background: var(--surface-muted); font: inherit; font-size: 13px; cursor: pointer; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs [aria-selected="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--line-strong); font-weight: 700; }
+html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+html.expense-native[data-desktop-layout="wallpaper"] .recent-surface { margin-top: 24px; }
+@media (max-width: 1020px) {
+  html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper] { --desktop-scenic-height: clamp(56px, 10vh, 108px); }
+  html.expense-native[data-desktop-layout="wallpaper"] .overview-grid { grid-template-columns: minmax(0, 1fr); }
+  html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-card { min-height: 0; }
+  html.expense-native[data-desktop-layout="wallpaper"] .topbar { flex-wrap: wrap; }
+}
+@media (max-width: 720px) {
+  html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper] { --desktop-scenic-height: 48px; }
+  html.expense-native[data-desktop-layout="wallpaper"] .topbar { width: calc(100% - 32px); margin: 16px auto; padding: 12px 14px; }
+  html.expense-native[data-desktop-layout="wallpaper"] main { padding: 0 16px 32px; }
+  html.expense-native[data-desktop-layout="wallpaper"] .top-actions { width: 100%; flex-wrap: wrap; gap: 8px; }
+  html.expense-native[data-desktop-layout="wallpaper"] .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html.expense-native[data-desktop-layout="wallpaper"] .metric-value { white-space: normal; overflow-wrap: anywhere; }
+  html.expense-native[data-desktop-layout="wallpaper"] .trend-surface .section-heading { flex-wrap: wrap; gap: 10px; }
+}
+@media (max-height: 720px) and (min-width: 721px) {
+  html.expense-native[data-desktop-layout="wallpaper"][data-wallpaper] { --desktop-scenic-height: 76px; }
+}
+@media (forced-colors: active) {
+  html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs button { border-color: ButtonText; }
+  html.expense-native[data-desktop-layout="wallpaper"] .desktop-distribution-tabs [aria-selected="true"] { outline: 2px solid Highlight; }
+}

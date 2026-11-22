@@ -1,0 +1,333 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+  color: #17231d;
+  background: #eef3ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(52, 117, 83, 0.12), transparent 32%),
+    #eef3ef;
+}
+
+button {
+  font: inherit;
+}
+
+.watch-shell {
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 42px 0;
+}
+
+.watch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.watch-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.watch-header p,
+.status-heading p {
+  margin: 0 0 4px;
+  color: #637269;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.watch-header h1,
+.status-heading h2 {
+  margin: 0;
+}
+
+.watch-header h1 {
+  font-size: clamp(1.35rem, 4vw, 1.8rem);
+}
+
+.watch-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 15px;
+  background: #1f6b45;
+  box-shadow: 0 8px 24px rgba(31, 107, 69, 0.2);
+}
+
+.watch-mark img {
+  width: 23px;
+  filter: brightness(0) invert(1);
+}
+
+.watch-card {
+  padding: 24px;
+  border: 1px solid #d5dfd8;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 44px rgba(40, 63, 51, 0.09);
+}
+
+.status-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.status-heading h2 {
+  font-size: 1.18rem;
+}
+
+.watch-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e6ece8;
+  color: #536158;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.watch-badge.running {
+  background: #fff1cc;
+  color: #795b0b;
+}
+
+.watch-badge.passed {
+  background: #dff2e6;
+  color: #1e6c43;
+}
+
+.watch-badge.failed {
+  background: #fae4e1;
+  color: #9d342c;
+}
+
+.watch-message {
+  min-height: 48px;
+  margin: 20px 0;
+  color: #536158;
+  line-height: 1.55;
+}
+
+.watch-stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.watch-stats span {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f2f6f3;
+  color: #637269;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.deals-card {
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid #d5dfd8;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 44px rgba(40, 63, 51, 0.07);
+}
+
+.deals-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e3ebe5;
+}
+
+.deals-heading p,
+.deals-heading h2 {
+  margin: 0;
+}
+
+.deals-heading p {
+  margin-bottom: 4px;
+  color: #637269;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.deals-heading h2 {
+  font-size: 1.1rem;
+}
+
+.deals-heading > span {
+  color: #748178;
+  font-size: 0.78rem;
+}
+
+.deal-list {
+  display: grid;
+}
+
+.deal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid #edf1ee;
+}
+
+.deal-item:last-child {
+  border-bottom: 0;
+}
+
+.deal-item a {
+  color: #1c5035;
+  font-weight: 750;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.deal-item a:hover {
+  text-decoration: underline;
+}
+
+.deal-item p {
+  margin: 5px 0 0;
+  color: #748178;
+  font-size: 0.76rem;
+}
+
+.deal-price {
+  display: grid;
+  flex: 0 0 auto;
+  justify-items: end;
+  gap: 3px;
+}
+
+.deal-price strong {
+  color: #17231d;
+  font-size: 1.05rem;
+}
+
+.deal-price span {
+  color: #a03d30;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.empty-deals {
+  margin: 0;
+  padding: 28px 8px 12px;
+  color: #748178;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.watch-stats strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #17231d;
+  font-size: 1.35rem;
+}
+
+.run-button {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 13px;
+  background: #1f6b45;
+  color: white;
+  cursor: pointer;
+  font-weight: 750;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.run-button:hover:not(:disabled) {
+  background: #175737;
+  transform: translateY(-1px);
+}
+
+.run-button:focus-visible {
+  outline: 3px solid rgba(31, 107, 69, 0.25);
+  outline-offset: 3px;
+}
+
+.run-button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.run-button img {
+  width: 18px;
+  filter: brightness(0) invert(1);
+}
+
+.run-button.running img {
+  animation: spin 1s linear infinite;
+}
+
+.watch-note {
+  margin: 14px 4px 0;
+  color: #748178;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 520px) {
+  .watch-shell {
+    width: min(100% - 20px, 760px);
+    padding: 24px 0;
+  }
+
+  .watch-card {
+    padding: 20px;
+  }
+
+  .watch-header {
+    align-items: flex-start;
+  }
+
+  .deals-card {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

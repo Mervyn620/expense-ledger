@@ -1,0 +1,185 @@
+/* The desktop host alone enables this backdrop. Static mode keeps its four wallpapers. */
+html[data-desktop-visual-mode="particle"][data-theme] {
+  --canvas: #07101e;
+  --star-start: #07101e; --star-mid: #102642; --star-end: #080f23;
+  --wallpaper: none;
+  --wallpaper-wash: transparent;
+  --rail-rgb: 10 22 43;
+}
+html[data-desktop-visual-mode="particle"][data-theme="jade"] { --star-start: #071a19; --star-mid: #123b38; --star-end: #091c29; }
+html[data-desktop-visual-mode="particle"][data-theme="indigo"] { --star-start: #101127; --star-mid: #29274b; --star-end: #100e26; }
+html[data-desktop-visual-mode="particle"][data-theme="ink"] { --star-start: #12161c; --star-mid: #2a3039; --star-end: #121721; }
+html[data-desktop-visual-mode="particle"] body::before {
+  background:
+    radial-gradient(ellipse 58% 44% at 72% 30%, rgb(43 83 137 / 28%), transparent 75%),
+    radial-gradient(ellipse 38% 48% at 20% 76%, rgb(66 48 111 / 20%), transparent 78%),
+    linear-gradient(125deg, var(--star-start) 0%, var(--star-mid) 52%, var(--star-end) 100%);
+}
+#expense-desktop-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  display: none;
+}
+html[data-desktop-visual-mode="particle"] #expense-desktop-stars { display: block; }
+
+/* The selected static wallpaper and palette remain saved for switching back. */
+.particle-appearance-note { display: none; }
+html[data-desktop-visual-mode="particle"] .appearance-dialog [data-wallpaper-settings] { display: none; }
+html[data-desktop-visual-mode="particle"] .particle-appearance-note {
+  display: block;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border: 1px solid rgb(84 140 185 / 27%);
+  border-radius: 12px;
+  background: rgb(201 226 244 / 38%);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-desktop-visual-mode="particle"] :is(.button, .glass-button, .operation-action, .analysis-action, .run-button, .appearance-button, #chatSubmit):hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.045);
+    box-shadow: 0 8px 22px rgb(39 111 165 / 24%);
+  }
+}
+html[data-desktop-visual-mode="particle"] .particle-bounce {
+  transform-origin: center;
+  animation: particle-control-bounce 620ms ease-out both !important;
+}
+@keyframes particle-control-bounce {
+  0% { transform: scale(1); }
+  16% { transform: scale(.84); }
+  46% { transform: scale(1.13); }
+  72% { transform: scale(.965); }
+  100% { transform: scale(1); }
+}
+/* The bounce follows the app's own switch (data-motion), like the native bounce. */
+@media (forced-colors: active) {
+  html[data-desktop-visual-mode="particle"] #expense-desktop-stars { display: none; }
+}
+html[data-motion="reduced"] .particle-bounce { animation: none !important; }
+
+/* Update-page targets are painted into the same canvas as the wallpaper stars. */
+[data-panel="operations"] .operations-grid { position: relative; }
+.cosmos-score { display: none; }
+html.cosmos-active .cosmos-score:not([hidden]) {
+  position: absolute;
+  z-index: 2;
+  top: 26px;
+  width: 96px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid rgb(120 193 244 / 46%);
+  border-radius: 15px;
+  background: rgb(11 35 65 / 88%);
+  box-shadow: 0 8px 25px rgb(0 8 27 / 24%), inset 0 1px rgb(255 255 255 / 16%);
+  color: #d6edff;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .05em;
+  pointer-events: none;
+}
+html.cosmos-active .cosmos-score--ship { left: -16px; transform: translateX(-100%); }
+html.cosmos-active .cosmos-score--star { right: -16px; transform: translateX(100%); }
+html.cosmos-active .cosmos-score--alien:not([hidden]) { top: 112px; left: -16px; transform: translateX(-100%); border-color: rgb(140 232 180 / 46%); }
+.cosmos-score b { display: block; color: #fff; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; }
+.cosmos-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+html.cosmos-active .update-surface:focus-visible { outline: 2px solid #a9e9ff; outline-offset: 3px; }
+html.cosmos-active:not([data-transparency="solid"]) .update-surface {
+  background: rgb(var(--glass-rgb) / var(--glass-chart));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Sticker aliens grip a window edge; compositor-only peeks, and only a visible visitor accepts a hit. */
+#cosmos-edge-aliens { display: none; position: fixed; inset: 0; z-index: 16; overflow: hidden; pointer-events: none; }
+html.cosmos-active #cosmos-edge-aliens { display: block; }
+.cosmos-alien {
+  position: absolute;
+  display: block;
+  width: var(--alien-size, 110px);
+  height: var(--alien-size, 110px);
+  opacity: 0;
+  pointer-events: none;
+  cursor: crosshair;
+  transform: var(--alien-out);
+  transition: transform 640ms cubic-bezier(.34,1.42,.5,1), opacity 300ms ease;
+  filter: drop-shadow(0 4px 9px rgb(4 10 30 / 45%));
+}
+.cosmos-alien__art { display: block; width: 100%; height: 100%; overflow: visible; transform: rotate(var(--alien-turn, 0deg)); }
+.cosmos-alien .alien-head { transform-box: view-box; transform-origin: 60px 104px; animation: cosmos-alien-sway 3.4s ease-in-out infinite; }
+.cosmos-alien .alien-pupils { transform: translate(var(--look-x, 0px), var(--look-y, 0px)); transition: transform 180ms ease-out; }
+.cosmos-alien .alien-lids { transform: scaleY(0); transform-box: fill-box; transform-origin: 50% 0; animation: cosmos-alien-blink 4.8s infinite var(--alien-blink-delay, 0s); }
+.cosmos-alien .alien-ko { display: none; }
+.cosmos-alien.is-hit .alien-ko { display: inline; }
+.cosmos-alien.is-hit :is(.alien-eyes, .alien-face) { display: none; }
+.cosmos-alien--right { right: calc(0px - var(--alien-size)); top: var(--alien-position); --alien-out: translateX(0); --alien-in: translateX(calc(0px - var(--alien-peek))); }
+.cosmos-alien--left { left: calc(0px - var(--alien-size)); top: var(--alien-position); --alien-out: translateX(0); --alien-in: translateX(var(--alien-peek)); }
+.cosmos-alien--bottom { bottom: calc(0px - var(--alien-size)); left: var(--alien-position); --alien-out: translateY(0); --alien-in: translateY(calc(0px - var(--alien-peek))); }
+.cosmos-alien--top { top: calc(0px - var(--alien-size)); left: var(--alien-position); --alien-out: translateY(0); --alien-in: translateY(var(--alien-peek)); }
+.cosmos-alien.is-peeking { opacity: 1; transform: var(--alien-in); pointer-events: auto; }
+.cosmos-alien.is-repositioning { transition: none; }
+.cosmos-alien.is-peeking:hover { filter: drop-shadow(0 4px 9px rgb(4 10 30 / 45%)) drop-shadow(0 0 10px rgb(255 226 150 / 55%)); }
+.cosmos-alien.is-peeking:focus-visible { outline: 2px solid #a9e9ff; outline-offset: -3px; }
+/* A hit alien shows dizzy eyes, jolts, then ducks back behind the edge. */
+.cosmos-alien.is-hit { opacity: 1; pointer-events: none; animation: cosmos-alien-hit 560ms cubic-bezier(.3,.6,.3,1) forwards; }
+@keyframes cosmos-alien-hit {
+  0% { transform: var(--alien-in); opacity: 1; }
+  22% { transform: var(--alien-in) scale(1.08) rotate(-5deg); opacity: 1; }
+  45% { transform: var(--alien-in) scale(.96) rotate(4deg); opacity: 1; }
+  100% { transform: var(--alien-out); opacity: 0; }
+}
+@keyframes cosmos-alien-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg) translateY(-2px); }
+}
+@keyframes cosmos-alien-blink {
+  0%, 90%, 100% { transform: scaleY(0); }
+  94% { transform: scaleY(1); }
+}
+html.cosmos-aiming, html.cosmos-aiming body { cursor: crosshair; }
+.cosmos-snowburst {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  margin: -90px 0 0 -90px;
+  pointer-events: none;
+  transform-origin: center;
+  animation: cosmos-snowburst 1050ms cubic-bezier(.16,.65,.26,1) forwards;
+}
+.cosmos-snowburst svg { display: block; width: 100%; height: 100%; }
+@keyframes cosmos-snowburst {
+  0% { opacity: 1; transform: scale(.22) rotate(-12deg); }
+  22% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.15) rotate(24deg); }
+}
+@media (max-width: 1100px) {
+  [data-panel="operations"].cosmos-scored .operations-grid { margin-top: 86px; }
+  html.cosmos-active .cosmos-score:not([hidden]) { top: -76px; }
+  html.cosmos-active .cosmos-score--ship { left: 0; transform: none; }
+  html.cosmos-active .cosmos-score--star { right: 0; transform: none; }
+  html.cosmos-active .cosmos-score--alien:not([hidden]) { top: -76px; left: 50%; transform: translateX(-50%); }
+}
+@media (max-width: 760px) {
+  .update-surface .section-heading { flex-wrap: wrap; }
+}
+html[data-motion="reduced"] :is(.cosmos-alien, .cosmos-alien *) { transition: none !important; animation: none !important; }
+@media (forced-colors: active) {
+  #cosmos-edge-aliens { display: none !important; }
+  html.cosmos-active .cosmos-score:not([hidden]) { background: Canvas; color: CanvasText; border-color: CanvasText; }
+}

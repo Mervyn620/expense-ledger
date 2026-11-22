@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.expenses.invalid/schema/collector-manifest-v1.json",
+  "title": "Expense Collector Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifest_version", "component_contract", "collectors"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "manifest_version": {
+      "const": 1
+    },
+    "component_contract": {
+      "const": "expense-collector/v1"
+    },
+    "collectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/collector"
+      }
+    }
+  },
+  "$defs": {
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime", "entrypoint", "arguments"],
+      "properties": {
+        "runtime": {
+          "enum": ["node", "python"]
+        },
+        "entrypoint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overlap_days_setting"],
+      "properties": {
+        "overlap_days_setting": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_orders_setting": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transactions", "item_staging"],
+      "properties": {
+        "transactions": {
+          "type": "string"
+        },
+        "item_staging": {
+          "type": "string"
+        },
+        "sanitized_cache": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "enabled",
+        "role",
+        "ledger_platform",
+        "tab_platform",
+        "capabilities",
+        "window",
+        "collect",
+        "import",
+        "outputs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "role": {
+          "const": "orders"
+        },
+        "ledger_platform": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "tab_platform": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "orders",
+              "items",
+              "product_links",
+              "payment_evidence",
+              "payment_evidence_external",
+              "sanitized_cache"
+            ]
+          }
+        },
+        "window": {
+          "$ref": "#/$defs/window"
+        },
+        "collect": {
+          "$ref": "#/$defs/phase"
+        },
+        "import": {
+          "$ref": "#/$defs/phase"
+        },
+        "outputs": {
+          "$ref": "#/$defs/outputs"
+        }
+      }
+    }
+  }
+}

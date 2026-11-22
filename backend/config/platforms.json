@@ -1,0 +1,58 @@
+{
+  "walmart_ca": {
+    "name": "Walmart Canada",
+    "ordersUrl": "https://www.walmart.ca/orders",
+    "match": "walmart"
+  },
+  "amazon_ca": {
+    "name": "Amazon Canada",
+    "ordersUrl": "https://www.amazon.ca/gp/css/order-history",
+    "match": "amazon"
+  },
+  "the_ordinary_ca": {
+    "name": "The Ordinary Canada",
+    "ordersUrl": "https://theordinary.com/en-ca/orders",
+    "match": "theordinary",
+    "hosts": [
+      "theordinary.com",
+      "www.theordinary.com"
+    ]
+  },
+  "costco_ca": {
+    "name": "Costco Canada",
+    "ordersUrl": "https://www.costco.ca/OrderStatusCmd",
+    "match": "costco"
+  },
+  "instacart": {
+    "name": "Instacart",
+    "ordersUrl": "https://www.instacart.ca/store/account/orders",
+    "match": "instacart"
+  },
+  "uber_eats": {
+    "name": "Uber Eats",
+    "ordersUrl": "https://www.ubereats.com/orders",
+    "match": "ubereats"
+  },
+  "fantuan": {
+    "name": "Fantuan",
+    "ordersUrl": "https://www.fantuanorder.com/zh-CN",
+    "match": "fantuan"
+  },
+  "scotia": {
+    "name": "Scotiabank",
+    "ordersUrl": "https://secure.scotiabank.com/my-accounts",
+    "match": "scotia",
+    "hosts": [
+      "secure.scotiabank.com",
+      "auth.scotiaonline.scotiabank.com"
+    ]
+  },
+  "tnt_ca": {
+    "name": "T&T Supermarket",
+    "ordersUrl": "https://www.tntsupermarket.com/eng/order-history",
+    "match": "tntsupermarket",
+    "hosts": [
+      "www.tntsupermarket.com"
+    ]
+  }
+}

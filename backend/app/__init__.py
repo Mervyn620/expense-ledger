@@ -1,0 +1,1 @@
+"""Local expense ledger application."""

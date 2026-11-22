@@ -1,0 +1,30 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # The PowerShell maintenance scripts expect the project-owned runtime at backend/.app-runtime.
+      - name: Create project runtime
+        run: |
+          python -m venv .app-runtime
+          .app-runtime\Scripts\python.exe -m pip install -r requirements-app.txt
+      - name: Python tests
+        run: .app-runtime\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
+      - name: Node tests
+        shell: bash
+        run: node --test tests_js/*.test.mjs

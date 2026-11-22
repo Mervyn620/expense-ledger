@@ -1,0 +1,11 @@
+{
+  "name": "expense-ledger-local-app",
+  "private": true,
+  "version": "1.21.0",
+  "scripts": {
+    "test:collectors": "node --test tests_js/*.test.mjs"
+  },
+  "devDependencies": {
+    "lucide-static": "1.21.0"
+  }
+}

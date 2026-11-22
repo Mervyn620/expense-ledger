@@ -1,0 +1,24 @@
+/* Shared custom select. The original control retains form semantics only. */
+.glass-select { position: relative; display: inline-flex; min-width: 0; width: 100%; vertical-align: middle; }
+.glass-select .glass-select-native { display: none !important; }
+.glass-select-trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-width: 0; min-height: 40px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 10px; background: rgb(var(--glass-rgb) / 80%); color: var(--text); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.glass-select-caption { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.glass-select-chevron { width: 7px; height: 7px; flex-shrink: 0; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); opacity: .65; transition: transform var(--motion-control) var(--motion-ease); }
+.glass-select-trigger[aria-expanded="true"] .glass-select-chevron { transform: translateY(2px) rotate(225deg); }
+.glass-select-trigger:hover:not(:disabled), .glass-select-trigger[aria-expanded="true"] { background: rgb(var(--glass-rgb) / 94%); border-color: var(--accent); }
+.glass-select-trigger:disabled { opacity: .5; cursor: not-allowed; }
+.glass-select-trigger[aria-invalid="true"] { border-color: var(--danger); }
+.select-control .glass-select { width: auto; flex: 1; min-width: 118px; }
+.select-control .glass-select-trigger { border: 0; background: transparent; min-height: 38px; padding: 6px 4px; }
+.select-control:focus-within { border-color: var(--accent); }
+.refund-form .glass-select { margin-top: 8px; }
+.glass-select-menu { position: fixed; inset: auto; margin: 0; box-sizing: border-box; padding: 6px; max-height: 300px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; color: var(--text); background: rgb(var(--glass-rgb) / var(--glass-floating, .92)); border: 1px solid rgb(255 255 255 / 65%); border-radius: 14px; box-shadow: 0 14px 38px rgb(16 29 46 / 18%), inset 0 1px 0 rgb(255 255 255 / 60%); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); }
+.glass-select-option { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 42px; padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; cursor: pointer; transition: background-color var(--motion-control) var(--motion-ease), color var(--motion-control) var(--motion-ease); }
+.glass-select-option > span:first-child { min-width: 0; }
+.glass-select-option[aria-selected="true"] { color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); font-weight: 650; }
+.glass-select-option.is-active, .glass-select-option:hover:not([aria-disabled="true"]) { background: color-mix(in srgb, var(--accent) 13%, transparent); }
+.glass-select-option[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.glass-select-check { flex-shrink: 0; width: 15px; visibility: hidden; }
+.glass-select-option[aria-selected="true"] .glass-select-check { visibility: visible; }
+@media (max-width: 760px) { .select-control .glass-select { min-width: 0; } }
+@media (prefers-reduced-motion: reduce) { .glass-select-chevron { transition: none; } }
